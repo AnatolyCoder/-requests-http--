@@ -3,23 +3,19 @@ import json
 
 
 r = requests.get('https://akabab.github.io/superhero-api/api/all.json')
-
 list_heroes = json.loads(r.text)
+list_of_compared_heroes = ['Hulk', 'Captain America', 'Thanos']
+heroes_and_their_intelligence_stats = {}
+for hero in list_of_compared_heroes:
+    for hero_dict in list_heroes:
+        for key, value in hero_dict.items():
+            if value == hero:
+                heroes_and_their_intelligence_stats.update({hero_dict["name"]: hero_dict["powerstats"]["intelligence"]})
 
-for hero_dict in list_heroes:
-    for key, value in hero_dict.items():
-        if value == 'Hulk':
-            hulk_intelligence = hero_dict["powerstats"]["intelligence"]
-        if value == 'Captain America':
-            captain_america_intelligence = hero_dict["powerstats"]["intelligence"]
-        if value == 'Thanos':
-            thanos_intelligence = hero_dict["powerstats"]["intelligence"]
-print(f'Hulk: {hulk_intelligence}\nCaptain America: {captain_america_intelligence}\nThanos: {thanos_intelligence}\n')
+max_intelligence = max(heroes_and_their_intelligence_stats.values())
+for hero_name, intelligence in heroes_and_their_intelligence_stats.items():
+    if intelligence == max_intelligence:
+        print(f'{hero_name} has the most intelligence stat: {intelligence}')
 
-if hulk_intelligence > captain_america_intelligence and hulk_intelligence > thanos_intelligence:
-    print(f'Hulk has the most intelligence stat: {hulk_intelligence}')
-elif captain_america_intelligence > hulk_intelligence > thanos_intelligence:
-    print(f'Captain America has the most intelligence stat: {captain_america_intelligence}')
-else: print(f'Thanos has the most intelligence stat: {thanos_intelligence}')
 
 
